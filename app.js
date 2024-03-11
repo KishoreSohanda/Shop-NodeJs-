@@ -1,6 +1,8 @@
 const path=require('path');
-const adminData=require('./routes/admin');
+const adminRoutes=require('./routes/admin');
 const shopRoutes=require('./routes/shop');
+
+const errorController=require('./controllers/error');
 
 const express = require('express');
 const bodyParser=require('body-parser');
@@ -12,10 +14,8 @@ app.set('views','views');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static(path.join(__dirname,'public')));
 
-app.use('/admin',adminData.routes); 
+app.use('/admin',adminRoutes); 
 app.use(shopRoutes);
-app.use((req,res,next)=>{
-    res.render('404.ejs',{pageTitle:'Page Not Found'});
-});
+app.use(errorController.get404);
 
 app.listen(3000);
